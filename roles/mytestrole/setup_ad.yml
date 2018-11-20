@@ -1,10 +1,6 @@
 ---
 
 - hosts: windows
+  become: yes
   roles:
-	- commom
-	  tags: ["foo"]
-	- webservers
-	 vars:
-         dir: '/opt/a'
-         app_port: 5000
+    - {role: win_ad_install}

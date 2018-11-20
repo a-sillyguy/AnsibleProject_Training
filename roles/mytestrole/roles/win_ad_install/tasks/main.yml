@@ -1,40 +1,51 @@
 ---
 # tasks file for win_ad_install
 #
-- name:
-  import_tasks: 
-  when : <if any>
-- name:
-  import_tasks: 
-  when:<if_any>
+#- name:
+#  import_tasks: 
+#  when : <if any>
 
-#Ensure this runs on dns_server
-- hosts:
-        dns_server
-
-#Initiallize necessary parameters
-- vars:
-        domain_name=
-        domain_admin_pasword=
-
+#--Install Block starts----
 #Task to execute
 - name: Install AD Domain Services
   win_feature:
-        name: Active Directory Domain Services
-	state: present
+#     name: Active Directory Domain Services
+     name: AD-Domain-Services
+     state: present
   register: win_feature_result
 
 #Cant push this to hadler as this is madatory
 #Reboot the server afterabove is installed
 - name: rebooting after installing AD Directory services feature
   win_reboot:
-        when: win_feature_result.reboot_required
+  when: win_feature_result.reboot_required
 
+#--Install Block ends----
+
+#
+#--Configure Block starts----
 # Command to check if domain exist if not, it will create a domain
 - name: Setup the AD Controller
   win_domain:
-	dns_domain_name: {{dns_domain_name}}
-	safe_mode_password: {{safe_mode_password}}
+    dns_domain_name: "{{ad_domain_name}}"
+    safe_mode_password: "{{ad_safe_mode_password}}"
   register: win_domain_result
-
   notify: windows_reboot
+
+ #Cant push this to hadler as this is madatory
+#Reboot the server afterabove is installed
+- name: rebooting after configuring AD Directory services feature
+  win_reboot:
+  when: win_domain_result.reboot_required
+
+
+#--Prints out domain list start----
+#
+- name: print the domain list available
+  win_shell: nltest /dclist:"{{ ad_domain_name }}"
+  register: win_shell_result
+
+- name: prints the domain list on screen
+  debug:
+    msg: "{{win_shell_result}}"
+#--Prints 

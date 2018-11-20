@@ -1,2 +1,5 @@
 ---
 # handlers file for win_ad_install
+
+- name: windows_reboot
+  win_reboot:

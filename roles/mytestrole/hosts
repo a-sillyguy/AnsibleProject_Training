@@ -35,3 +35,5 @@ ansible_connection=winrm
 ansible_user=Administrator
 ansible_winrm_server_cert_validation=ignore
 ansible_become=false
+ad_domain_name=ad1.4c61.example.opentlc.com
+ansible_password=jVMijRwLbI02gFCo2xkjlZ9lxEA7bm7zgg==
