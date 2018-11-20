@@ -1,0 +1,12 @@
+---
+- name: Main playbook to setup openssh
+  hosts: windows
+
+#  include_vars:
+#    file: './ssh_var.yml'
+#  var_files:
+#    - ./ssh_var.yml
+
+  roles:
+    - { role: win_service_config, vars_file: [./ssh_var.yml]}
+ 

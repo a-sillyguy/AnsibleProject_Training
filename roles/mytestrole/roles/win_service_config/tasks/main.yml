@@ -5,24 +5,62 @@
 #Install a given pacakge using win_choclatey for win2k12r2 stadard servers
 - name: Install given package only on Win2K12R2 Standard Server
   win_chocolatey:
- 
-  when: {{ansible_distribution}} == "Microsoft Windows Server 2012 R2 Standard"
+    name: "{{package_name}}"
+    state: latest
+    params: "{{parameters}}"
+  become: yes
+  become_user: Administrator
+  become_method: runas
+  register: win_chocolatey_result
+  when: ansible_distribution == "Microsoft Windows Server 2012 R2 Standard"
+
+# To debug above process
+- name: Show the output of choclatey package install
+  debug:
+    msg: "{{win_chocolatey_result}}"
+
+
+
+
+
+#check if the given service is installed
+- name: Check if a service is installed
+  win_service:
+    name: "{{service_name}}"
+  register: service_info
+
+#To debug above process
+- name: Show the output of service exist check
+  debug:
+     msg: "{{service_info}}"
 
 #Enable a given service name
 - name: Enable a given service name
-  service:
-    name: {{service_name}}
-    state: enabled
-  when: {{ansible_distribution}} == "Microsoft Windows Server 2012 R2 Standard"
+  win_service:
+    name: "{{service_name}}"
+    state: started
+    start_mode: auto
+  when: service_info.exists == "true"
+
+#Anyways still run , if above gets skipped as i am not sure, if the when condition above will work or not
+- name: Enable a given service name Re-Attempt
+  win_service:
+      name: "{{service_name}}"
+      state: started
+      start_mode: auto
+              
+
+
+
 
 #Create a firewall exception rule for given service
 - name: Add firewall exception for given service
   win_firewall_rule:
     name: Allow-OpenSSH-In
-    localport: {{local_port}}  
+    localport: "{{local_port}}"
     action: allow
     direction: in
-    protocol: {{protocol_name}}
+    protocol: "{{protocol_name}}"
     state: present
     enabled: yes
 
