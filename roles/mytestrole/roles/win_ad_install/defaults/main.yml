@@ -1,0 +1,6 @@
+---
+# defaults file for win_ad_install
+# Bascially, we save the input variable for the roles
+# These are gonna get overwridden by host_vars or vars in playscope.
+# This is what we want
+#

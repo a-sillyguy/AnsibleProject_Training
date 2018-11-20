@@ -1,0 +1,16 @@
+---
+#Ensure this runs on dns_server
+- hosts:
+        dns_server
+
+#Initiallize necessary parameters
+- vars:
+        domain_name=
+        domain_admin_pasword=
+
+#Task to execute
+- name: Install AD Domain Services
+  win_feature:
+        name: Active Directory Domain Services
+	state: present
+

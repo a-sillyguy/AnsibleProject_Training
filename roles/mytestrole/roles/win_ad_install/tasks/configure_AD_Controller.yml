@@ -1,0 +1,11 @@
+---
+vars:
+  dns_domain_name={dns_domain_name}
+  safe_mode_password={safe_mode_password}
+
+- name: Setup the AD Controller
+  win_domain:
+	dns_domain_name: ansible.vagrant
+	safe_mode_password: password123!
+
+  notify: windows_reboot

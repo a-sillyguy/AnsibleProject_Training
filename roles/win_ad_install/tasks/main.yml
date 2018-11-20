@@ -1,0 +1,15 @@
+---
+- name: Install Windows AD on W2K12 Server
+
+tasks:
+        - name: TasK1
+          module_name:
+          state: latest
+          notify: if_any neeed
+
+handlers:
+        - name:
+          service:
+                name:
+                state:
+
