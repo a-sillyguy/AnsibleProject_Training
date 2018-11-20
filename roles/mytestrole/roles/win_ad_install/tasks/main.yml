@@ -8,3 +8,33 @@
   import_tasks: 
   when:<if_any>
 
+#Ensure this runs on dns_server
+- hosts:
+        dns_server
+
+#Initiallize necessary parameters
+- vars:
+        domain_name=
+        domain_admin_pasword=
+
+#Task to execute
+- name: Install AD Domain Services
+  win_feature:
+        name: Active Directory Domain Services
+	state: present
+  register: win_feature_result
+
+#Cant push this to hadler as this is madatory
+#Reboot the server afterabove is installed
+- name: rebooting after installing AD Directory services feature
+  win_reboot:
+        when: win_feature_result.reboot_required
+
+# Command to check if domain exist if not, it will create a domain
+- name: Setup the AD Controller
+  win_domain:
+	dns_domain_name: {{dns_domain_name}}
+	safe_mode_password: {{safe_mode_password}}
+  register: win_domain_result
+
+  notify: windows_reboot

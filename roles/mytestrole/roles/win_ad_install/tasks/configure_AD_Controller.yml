@@ -1,11 +1,9 @@
 ---
-vars:
-  dns_domain_name={dns_domain_name}
-  safe_mode_password={safe_mode_password}
-
+# Command to check if domain exist if not, it will create a domain
 - name: Setup the AD Controller
   win_domain:
-	dns_domain_name: ansible.vagrant
-	safe_mode_password: password123!
+	dns_domain_name: {{dns_domain_name}}
+	safe_mode_password: {{safe_mode_password}}
+  register: win_domain_result
 
   notify: windows_reboot

@@ -3,4 +3,8 @@
 # Bascially, we save the input variable for the roles
 # These are gonna get overwridden by host_vars or vars in playscope.
 # This is what we want
-#
+
+vars:
+  dns_domain_name: {{dns_domain_name}}
+  safe_mode_password: {{safe_mode_password}}
+

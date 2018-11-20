@@ -1,0 +1,10 @@
+---
+
+- hosts: windows
+  roles:
+	- commom
+	  tags: ["foo"]
+	- webservers
+	 vars:
+         dir: '/opt/a'
+         app_port: 5000
