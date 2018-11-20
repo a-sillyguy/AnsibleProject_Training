@@ -1,0 +1,29 @@
+---
+# tasks file for win_service_config
+#
+
+#Install a given pacakge using win_choclatey for win2k12r2 stadard servers
+- name: Install given package only on Win2K12R2 Standard Server
+  win_chocolatey:
+ 
+  when: {{ansible_distribution}} == "Microsoft Windows Server 2012 R2 Standard"
+
+#Enable a given service name
+- name: Enable a given service name
+  service:
+    name: {{service_name}}
+    state: enabled
+  when: {{ansible_distribution}} == "Microsoft Windows Server 2012 R2 Standard"
+
+#Create a firewall exception rule for given service
+- name: Add firewall exception for given service
+  win_firewall_rule:
+    name: Allow-OpenSSH-In
+    localport: {{local_port}}  
+    action: allow
+    direction: in
+    protocol: {{protocol_name}}
+    state: present
+    enabled: yes
+
+
